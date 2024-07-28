@@ -1,0 +1,30 @@
+.cstmButton {
+    border-radius: 5px;
+    border: solid 2px;
+    width: fit-content;
+    height: fit-content;
+    padding: 9px 15px 9px 15px;
+    cursor: pointer;
+}
+
+.black {
+    background-color: #090909;
+    color: #fff;
+    border-color: #fff;
+}
+
+.black:hover {
+    background-color: #fff;
+    color: #090909;
+}
+
+.white {
+    background-color: #fff;
+    color: #090909;
+    border-color: #090909;
+}
+
+.white:hover {
+    background-color: #090909;
+    color: #fff;
+}
