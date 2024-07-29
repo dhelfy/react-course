@@ -42,7 +42,7 @@ function App() {
         ]}
       />
 
-      {posts.length <= 0 ? <h1>There is not a single post yet :(</h1> : <PostsList posts={posts} deletePost={deletePost} />}
+      {posts.length <= 0 ? <h1>There is not a single post yet</h1> : <PostsList posts={posts} deletePost={deletePost} />}
     </div>
   );
 }
