@@ -5,6 +5,14 @@
     font-family: "Montserrat", sans-serif;
 }
 
+hr {
+    margin: 10px 0px 10px 0px;
+    height: 2px;
+    border-width: 0px;
+    background-color: #090909;
+    border-radius: 5px;
+}
+
 #root {
     display: flex;
     justify-content: center;

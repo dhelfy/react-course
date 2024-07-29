@@ -1,7 +1,7 @@
 import styles from "./Button.module.css"
 
-export default function CstmButton({ children, ...props}) {
-    let classes = styles[props.BtnColor] + ' ' + styles.cstmButton
+export default function CstmButton({ BtnColor, children, ...props}) {
+    let classes = styles[BtnColor] + ' ' + styles.cstmButton
 
     return(
         <>

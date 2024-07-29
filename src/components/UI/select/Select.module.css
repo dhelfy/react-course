@@ -1,0 +1,13 @@
+.cstmSelect {
+    color: #090909;
+    border: solid 2px;
+    border-color: #090909;
+    border-radius: 5px;
+    outline: none;
+    width: 100px;
+    height: 25px;
+}
+
+.cstmOption {
+    color: #090909;
+}

@@ -2,4 +2,6 @@
     padding: 7px;
     border-radius: 5px;
     border-color: #090909;
+    border: 2px solid;
+    outline: none;
 }
