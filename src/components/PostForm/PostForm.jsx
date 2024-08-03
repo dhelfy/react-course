@@ -4,13 +4,15 @@ import styles from "./Form.module.css"
 import { useState } from "react";
 
 export default function Form({create}) {
+    // состояние с полями для нового поста
     let [post, setPost] = useState({title: '', content: ''})
 
     function addNewPost(event) {
         event.preventDefault()
+        // собираем данные с инпутов и комбинирует в пост
         let newPost = {...post, id: Date.now()}
-        create(newPost)
-        setPost({title: '', content: ''})
+        create(newPost) // создаем новый пост в массиве постов
+        setPost({title: '', content: ''}) // зануляем инпуты
       }
 
     return (
