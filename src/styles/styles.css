@@ -39,3 +39,8 @@ hr {
     font-size: 10pt;
     font-weight: 400;
 }
+
+.search_bar {
+    display: flex;
+    gap: 5px;
+}

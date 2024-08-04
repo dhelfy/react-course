@@ -3,6 +3,7 @@ import PostsList from "./components/PostsList";
 import PostForm from "./components/PostForm/PostForm";
 import CstmSelect from "./components/UI/select/CstmSelect";
 import { useState } from "react";
+import CstmInput from "./components/UI/input/CstmInput";
 
 function App() {
   // массив постов и его состояние
@@ -14,6 +15,9 @@ function App() {
 
   // состояние CstmSelect, изначально пустая строка
   let [selectValue, setSelectValue] = useState('')
+
+  // состояние для поиска
+  let [search, setSearch] = useState('')
 
   // колбэк для создания поста в массив постов, используется в PostForm
   function createPost(newPost) {
@@ -40,13 +44,17 @@ function App() {
 
       <hr></hr>
 
-      <CstmSelect defValue='Sort by'
-        selectValue={selectValue} onChange={(event) => {postSort(event.currentTarget.value)}}
-        options={[
-          { name: 'Title', value: 'title' },
-          { name: 'Content', value: 'content' }
-        ]}
-      />
+      <div className="search_bar">
+        <CstmSelect defValue='Sort by'
+          selectValue={selectValue} onChange={(event) => { postSort(event.currentTarget.value) }}
+          options={[
+            { name: 'Title', value: 'title' },
+            { name: 'Content', value: 'content' }
+          ]}
+        />
+
+        <CstmInput placeholder='Search' name='search' value={search} onChange={(event) => {setSearch(event.currentTarget.value)}}/>
+      </div>
 
       {/* условная отрисовка, если массив постов содержит хотябы один эллемент, то отрисуются посты */}
       {/* если постов нет, то выведется заголовок */}

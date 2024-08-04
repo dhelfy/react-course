@@ -19,13 +19,11 @@ export default function Form({create}) {
         <>
             <h1>New post</h1>
             <form className={styles.PostForm}>
-                <CstmInput placeholder="Title" name="title"
-                    inputClass="CstmInput" value={post.title}
+                <CstmInput placeholder="Title" name="title" value={post.title}
                     onChange={function (event) { setPost({...post, title: event.currentTarget.value}) }}
                 />
 
-                <CstmInput placeholder="Type your text" name="content"
-                    inputClass="CstmInput" value={post.content}
+                <CstmInput placeholder="Type your text" name="content" value={post.content}
                     onChange={function (event) { setPost({...post, content: event.currentTarget.value}) }}
                 />
                 <CstmButton BtnColor="white" onClick={(event) => addNewPost(event)}>Create</CstmButton>

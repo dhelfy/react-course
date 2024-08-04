@@ -4,4 +4,6 @@
     border-color: #090909;
     border: 2px solid;
     outline: none;
+    width: 100%;
+    box-sizing: border-box;
 }
