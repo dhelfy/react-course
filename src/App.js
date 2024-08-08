@@ -2,7 +2,7 @@ import "./styles/styles.css"
 import PostsList from "./components/PostsList";
 import PostForm from "./components/PostForm/PostForm";
 import CstmSelect from "./components/UI/select/CstmSelect";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import CstmInput from "./components/UI/input/CstmInput";
 
 function App() {
@@ -30,13 +30,24 @@ function App() {
     setPosts(posts.filter(item => item.id !== post.id))
   }
 
+  // массив сортированных постов
+  let sortedPosts = useMemo(() => {
+    console.log('отработала функция')
+    if (selectValue) {
+      return [...posts].sort((a, b) => a[selectValue].localeCompare(b[selectValue]))
+    }
+    return posts
+  }, [selectValue, posts])
+
   // функция сортировки постов
   // используется в CstmSelect
   function postSort(sort) {
     setSelectValue(sort)
-
-    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
   }
+
+  let searchedPosts = useMemo(() => {
+    return sortedPosts.filter(post => post.title.toLowerCase().includes(search))  
+  }, [sortedPosts, search]) 
 
   return (
     <div className="App">
@@ -53,12 +64,12 @@ function App() {
           ]}
         />
 
-        <CstmInput placeholder='Search' name='search' value={search} onChange={(event) => {setSearch(event.currentTarget.value)}}/>
+        <CstmInput placeholder='Search' name='search' value={search} onChange={(event) => { setSearch(event.currentTarget.value) }} />
       </div>
 
       {/* условная отрисовка, если массив постов содержит хотябы один эллемент, то отрисуются посты */}
       {/* если постов нет, то выведется заголовок */}
-      {posts.length <= 0 ? <h1>There is not a single post yet</h1> : <PostsList posts={posts} deletePost={deletePost} />}
+      {searchedPosts.length <= 0 ? <h1>There is not a single post yet</h1> : <PostsList posts={searchedPosts} deletePost={deletePost} />}
     </div>
   );
 }
