@@ -1,9 +1,8 @@
 import "./styles/styles.css"
 import PostsList from "./components/PostsList";
 import PostForm from "./components/PostForm/PostForm";
-import CstmSelect from "./components/UI/select/CstmSelect";
 import { useMemo, useState } from "react";
-import CstmInput from "./components/UI/input/CstmInput";
+import PostFilter from "./components/PostFilter";
 
 function App() {
   // массив постов и его состояние
@@ -13,11 +12,7 @@ function App() {
     { id: 3, title: 'Another post', content: 'Oh, im so tired of thinking of what to write...' }
   ])
 
-  // состояние CstmSelect, изначально пустая строка
-  let [selectValue, setSelectValue] = useState('')
-
-  // состояние для поиска
-  let [search, setSearch] = useState('')
+  let [filter, setFilter] = useState({sort: '', query: ''})
 
   // колбэк для создания поста в массив постов, используется в PostForm
   function createPost(newPost) {
@@ -33,21 +28,15 @@ function App() {
   // массив сортированных постов
   let sortedPosts = useMemo(() => {
     console.log('отработала функция')
-    if (selectValue) {
-      return [...posts].sort((a, b) => a[selectValue].localeCompare(b[selectValue]))
+    if (filter.sort) {
+      return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
     }
     return posts
-  }, [selectValue, posts])
+  }, [filter.sort, posts])
 
-  // функция сортировки постов
-  // используется в CstmSelect
-  function postSort(sort) {
-    setSelectValue(sort)
-  }
-
-  let searchedPosts = useMemo(() => {
-    return sortedPosts.filter(post => post.title.toLowerCase().includes(search))  
-  }, [sortedPosts, search]) 
+  let searchedAndSortedPosts = useMemo(() => {
+    return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query))
+  }, [sortedPosts, filter.query])
 
   return (
     <div className="App">
@@ -55,21 +44,9 @@ function App() {
 
       <hr></hr>
 
-      <div className="search_bar">
-        <CstmSelect defValue='Sort by'
-          selectValue={selectValue} onChange={(event) => { postSort(event.currentTarget.value) }}
-          options={[
-            { name: 'Title', value: 'title' },
-            { name: 'Content', value: 'content' }
-          ]}
-        />
+      <PostFilter filter={filter} setFilter={setFilter}/>
 
-        <CstmInput placeholder='Search' name='search' value={search} onChange={(event) => { setSearch(event.currentTarget.value) }} />
-      </div>
-
-      {/* условная отрисовка, если массив постов содержит хотябы один эллемент, то отрисуются посты */}
-      {/* если постов нет, то выведется заголовок */}
-      {searchedPosts.length <= 0 ? <h1>There is not a single post yet</h1> : <PostsList posts={searchedPosts} deletePost={deletePost} />}
+      <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} />
     </div>
   );
 }
