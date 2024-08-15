@@ -43,4 +43,5 @@ hr {
 .search_bar {
     display: flex;
     gap: 5px;
+    width: 100%;
 }

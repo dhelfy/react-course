@@ -3,6 +3,8 @@ import PostsList from "./components/PostsList";
 import PostForm from "./components/PostForm/PostForm";
 import { useMemo, useState } from "react";
 import PostFilter from "./components/PostFilter";
+import CstmButton from "./components/UI/button/CstmButton";
+import CstmModal from "./components/UI/modal/CstmModal";
 
 function App() {
   // массив постов и его состояние
@@ -12,11 +14,16 @@ function App() {
     { id: 3, title: 'Another post', content: 'Oh, im so tired of thinking of what to write...' }
   ])
 
-  let [filter, setFilter] = useState({sort: '', query: ''})
+  // состояние для поиска и типа сортировки
+  let [filter, setFilter] = useState({ sort: '', query: '' })
+
+  // состояние для видимости модального окна
+  let [modalVisible, setModalVisible] = useState(false)
 
   // колбэк для создания поста в массив постов, используется в PostForm
   function createPost(newPost) {
     setPosts([...posts, newPost])
+    setModalVisible(false)
   }
 
   // колбэк для удаления поста, передается в PostList
@@ -27,26 +34,38 @@ function App() {
 
   // массив сортированных постов
   let sortedPosts = useMemo(() => {
-    console.log('отработала функция')
     if (filter.sort) {
       return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
     }
     return posts
   }, [filter.sort, posts])
 
+  // массив постов которые совпадают с поиском
+  // строится на основе sortedPosts
   let searchedAndSortedPosts = useMemo(() => {
     return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query))
   }, [sortedPosts, filter.query])
 
   return (
     <div className="App">
-      <PostForm create={createPost} />
 
-      <hr></hr>
+      {/* модалка */}
+      <CstmModal visible={modalVisible} setVisible={setModalVisible}>
+        <PostForm create={createPost} />
+      </CstmModal>
 
-      <PostFilter filter={filter} setFilter={setFilter}/>
+      {/* поиск, сортировка и создание постов */}
+      <h1>Posts list</h1>
+      <div style={{ display: 'flex', width: '100%', gap: '5px' }}>
+        <CstmButton BtnColor={'white'} onClick={(event) => { setModalVisible(true) }}>
+          Create
+        </CstmButton>
+        <PostFilter filter={filter} setFilter={setFilter} />
+      </div>
 
+      {/* сами посты */}
       <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} />
+
     </div>
   );
 }
