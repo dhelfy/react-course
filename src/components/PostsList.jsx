@@ -1,5 +1,5 @@
 import { CSSTransition, TransitionGroup } from "react-transition-group"
-import Post from "./Post"
+import Post from "./Post/Post"
 
 export default function PostsList({ posts, deletePost, ...props}) {
     let posts_list = posts.map(function (post) { 

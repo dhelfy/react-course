@@ -1,17 +1,19 @@
 import "./styles/styles.css"
 import PostsList from "./components/PostsList";
 import PostForm from "./components/PostForm/PostForm";
-import { useMemo, useState } from "react";
+import { useState, useEffect } from "react";
+import { usePosts } from "./hooks/usePosts";
 import PostFilter from "./components/PostFilter";
 import CstmButton from "./components/UI/button/CstmButton";
 import CstmModal from "./components/UI/modal/CstmModal";
+import axios from "axios";
 
 function App() {
   // массив постов и его состояние
   let [posts, setPosts] = useState([
-    { id: 1, title: 'I ate fish', content: 'I ate fish yesterday. What did you eat guys?' },
-    { id: 2, title: 'Learning React', content: 'This content took from props!' },
-    { id: 3, title: 'Another post', content: 'Oh, im so tired of thinking of what to write...' }
+    { id: 1, title: 'I ate fish', body: 'I ate fish yesterday. What did you eat guys?' },
+    { id: 2, title: 'Learning React', body: 'This content took from props!' },
+    { id: 3, title: 'Another post', body: 'Oh, im so tired of thinking of what to write...' }
   ])
 
   // состояние для поиска и типа сортировки
@@ -32,19 +34,16 @@ function App() {
     setPosts(posts.filter(item => item.id !== post.id))
   }
 
-  // массив сортированных постов
-  let sortedPosts = useMemo(() => {
-    if (filter.sort) {
-      return [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))
-    }
-    return posts
-  }, [filter.sort, posts])
+  async function fetchPosts () {
+    let response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit')
+    setPosts(response.data)
+  }
 
-  // массив постов которые совпадают с поиском
-  // строится на основе sortedPosts
-  let searchedAndSortedPosts = useMemo(() => {
-    return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query))
-  }, [sortedPosts, filter.query])
+  useEffect(() => {
+    fetchPosts()
+  }, [])
+
+  let searchedAndSortedPosts = usePosts(filter.sort, posts, filter.query)
 
   return (
     <div className="App">

@@ -5,14 +5,14 @@ import { useState } from "react";
 
 export default function Form({create}) {
     // состояние с полями для нового поста
-    let [post, setPost] = useState({title: '', content: ''})
+    let [post, setPost] = useState({title: '', body: ''})
 
     function addNewPost(event) {
         event.preventDefault()
         // собираем данные с инпутов и комбинирует в пост
         let newPost = {...post, id: Date.now()}
         create(newPost) // создаем новый пост в массиве постов
-        setPost({title: '', content: ''}) // зануляем инпуты
+        setPost({title: '', body: ''}) // зануляем инпуты
       }
 
     return (
@@ -23,8 +23,8 @@ export default function Form({create}) {
                     onChange={function (event) { setPost({...post, title: event.currentTarget.value}) }}
                 />
 
-                <CstmInput placeholder="Type your text" name="content" value={post.content}
-                    onChange={function (event) { setPost({...post, content: event.currentTarget.value}) }}
+                <CstmInput placeholder="Type your text" name="body" value={post.body}
+                    onChange={function (event) { setPost({...post, body: event.currentTarget.value}) }}
                 />
                 <CstmButton BtnColor="white" onClick={(event) => addNewPost(event)}>Create</CstmButton>
             </form>

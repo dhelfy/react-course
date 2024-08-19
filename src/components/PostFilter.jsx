@@ -8,7 +8,7 @@ export default function PostFilter({ filter, setFilter }) {
                 selectValue={filter.sort} onChange={(event) => { setFilter({ ...filter, sort: event.currentTarget.value }) }}
                 options={[
                     { name: 'Title', value: 'title' },
-                    { name: 'Content', value: 'content' }
+                    { name: 'Content', value: 'body' }
                 ]}
             />
 
