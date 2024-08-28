@@ -6,7 +6,7 @@ import { usePosts } from "./hooks/usePosts";
 import PostFilter from "./components/PostFilter";
 import CstmButton from "./components/UI/button/CstmButton";
 import CstmModal from "./components/UI/modal/CstmModal";
-import axios from "axios";
+import PostService from "./API/PostService";
 
 function App() {
   // массив постов и его состояние
@@ -35,8 +35,8 @@ function App() {
   }
 
   async function fetchPosts () {
-    let response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit')
-    setPosts(response.data)
+    let posts = await PostService.getAll()
+    setPosts(posts)
   }
 
   useEffect(() => {
