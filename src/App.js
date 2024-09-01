@@ -10,17 +10,16 @@ import PostService from "./API/PostService";
 
 function App() {
   // массив постов и его состояние
-  let [posts, setPosts] = useState([
-    { id: 1, title: 'I ate fish', body: 'I ate fish yesterday. What did you eat guys?' },
-    { id: 2, title: 'Learning React', body: 'This content took from props!' },
-    { id: 3, title: 'Another post', body: 'Oh, im so tired of thinking of what to write...' }
-  ])
+  let [posts, setPosts] = useState([])
 
   // состояние для поиска и типа сортировки
   let [filter, setFilter] = useState({ sort: '', query: '' })
 
   // состояние для видимости модального окна
   let [modalVisible, setModalVisible] = useState(false)
+
+  // состояние загрузки чего либо
+  let [isLoading, setIsLoading] = useState(false)
 
   // колбэк для создания поста в массив постов, используется в PostForm
   function createPost(newPost) {
@@ -34,15 +33,20 @@ function App() {
     setPosts(posts.filter(item => item.id !== post.id))
   }
 
+  // функция загрузки постов с сервера
   async function fetchPosts () {
+    setIsLoading(true)
     let posts = await PostService.getAll()
     setPosts(posts)
+    setIsLoading(false)
   }
 
+  // useEffect, выполнится единожды, только при первом рендере
   useEffect(() => {
     fetchPosts()
   }, [])
 
+  // сортированные посты и посты подходящие под поиск
   let searchedAndSortedPosts = usePosts(filter.sort, posts, filter.query)
 
   return (
@@ -63,7 +67,7 @@ function App() {
       </div>
 
       {/* сами посты */}
-      <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} />
+      {isLoading ? <h1>Loading...</h1> : <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} />}
 
     </div>
   );
