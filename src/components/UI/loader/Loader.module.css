@@ -1,0 +1,22 @@
+.loader {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border-color: #090909;
+    border-style: dashed;
+    position: fixed;
+    left: 50%;
+    margin-left: -50px;
+    margin-top: 50px;
+    animation: 3s linear infinite rotate;
+}
+
+@keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+  
+    to {
+      transform: rotate(360deg);
+    }
+}

@@ -18,5 +18,6 @@
     background: #fff;
     padding: 25px;
     border-radius: 10px;
-    min-width: 350px;
+    width: 350px;
+    min-width: fit-content;
 }

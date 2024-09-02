@@ -7,6 +7,7 @@ import PostFilter from "./components/PostFilter";
 import CstmButton from "./components/UI/button/CstmButton";
 import CstmModal from "./components/UI/modal/CstmModal";
 import PostService from "./API/PostService";
+import Loader from "./components/UI/loader/Loader";
 
 function App() {
   // массив постов и его состояние
@@ -36,9 +37,11 @@ function App() {
   // функция загрузки постов с сервера
   async function fetchPosts () {
     setIsLoading(true)
-    let posts = await PostService.getAll()
-    setPosts(posts)
-    setIsLoading(false)
+    setTimeout(async () => {
+      let posts = await PostService.getAll()
+      setPosts(posts)
+      setIsLoading(false)
+    }, 1500);
   }
 
   // useEffect, выполнится единожды, только при первом рендере
@@ -67,7 +70,7 @@ function App() {
       </div>
 
       {/* сами посты */}
-      {isLoading ? <h1>Loading...</h1> : <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} />}
+      {isLoading ? <Loader /> : <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} />}
 
     </div>
   );
