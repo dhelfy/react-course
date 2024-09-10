@@ -1,0 +1,16 @@
+.pages_wrapper {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.page {
+    cursor: pointer;
+    padding: 2px;
+}
+
+.page_active {
+    cursor: pointer;
+    padding: 2px;
+    border: 1px solid #090909;
+}

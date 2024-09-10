@@ -10,6 +10,7 @@ import CstmModal from "./components/UI/modal/CstmModal";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/loader/Loader";
 import { totalPages, fillPagesArray } from "./utils/pages";
+import Pagination from "./components/UI/pagination/Pagination";
 
 function App() {
   // массив постов и его состояние
@@ -27,11 +28,16 @@ function App() {
   // кол-во страниц
   let [pages, setPages] = useState()
 
+  // лимит элементов в запросе
   let [limit, setLimit] = useState(10)
 
+  // плейсхолдер для заполнения страницами
   let pages_array = []
 
-  // фетчим посты + проверяме их загрузку + получаем ошибку если есть
+  /* 
+    фетчим посты, узнаем сколько их всего,
+    кладем их в массив с постами и устанавливаем кол-во страниц в pages
+  */ 
   let [postLoading, postError, fetchPosts] = useFetching(async () => {
     let posts = await PostService.getAll(limit, currentPage)
     let totalCount = posts.headers['x-total-count']
@@ -82,20 +88,11 @@ function App() {
       {postError && <h1>{postError}</h1>}
       {postLoading ? <Loader /> : <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} />}
 
-      <div className="pages_wrapper">
-        {pages_array.map((page, i) => {
-          return(
-            <p key={i} id={i+1} className={i+1==currentPage ? "page_active" : "page"} onClick={(event) => {
-              setCurrentPage(event.currentTarget.id)
-            }}>
-
-              {i + 1}
-
-            </p>
-          )
-        })}
-      </div>
-
+      <Pagination 
+        initial_arr={pages_array} 
+        currentPage={currentPage} 
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 }
