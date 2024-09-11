@@ -1,0 +1,12 @@
+.navbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.link {
+    text-decoration: none;
+    color: #090909;
+    font-weight: bold;
+}
