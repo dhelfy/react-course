@@ -2,19 +2,21 @@ import "./styles/styles.css"
 import Posts from "./pages/Posts"
 import About from "./pages/About";
 import NoPage from "./pages/NoPage";
-import NavBar from "./components/UI/NavBar/NavBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar />
-
         <Routes>
-          <Route path="posts" element={<Posts />} />
-          <Route path="about" element={<About />} />
-          <Route path="*" element={<NoPage />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />}/>
+            <Route path="blog" element={<Posts />} />
+            <Route path="about" element={<About />} />
+            <Route path="*" element={<NoPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </div>
