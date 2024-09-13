@@ -9,4 +9,12 @@
     text-decoration: none;
     color: #090909;
     font-weight: bold;
+    padding: 4px;
+    transition: 0.5s;
+}
+
+.active_link {
+    border-radius: 5px;
+    background-color: #090909;
+    color: #fff;
 }
