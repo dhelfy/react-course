@@ -1,11 +1,13 @@
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 import Post from "./Post/Post"
 
-export default function PostsList({ posts, deletePost, ...props}) {
+export default function PostsList({ posts, deletePost, openPost, ...props}) {
     let posts_list = posts.map(function (post) { 
         return (
             <CSSTransition key={post.id} classNames="item" timeout={500}>
-                <Post post_info={post} deletePost={deletePost}/>
+                <Post 
+                    post_info={post} deletePost={deletePost} openPost={openPost} 
+                />
             </CSSTransition>
         ) 
     })

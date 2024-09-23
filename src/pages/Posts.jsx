@@ -10,6 +10,7 @@ import PostService from "../API/PostService";
 import Loader from "../components/UI/loader/Loader";
 import { totalPages, fillPagesArray } from "../utils/pages";
 import Pagination from "../components/UI/pagination/Pagination";
+import { useNavigate } from "react-router-dom";
 
 export default function Posts() {
   // массив постов и его состояние
@@ -32,6 +33,8 @@ export default function Posts() {
 
   // плейсхолдер для заполнения страницами
   let pages_array = []
+
+  let navigate = useNavigate()
 
   /* 
     фетчим посты, узнаем сколько их всего,
@@ -56,6 +59,10 @@ export default function Posts() {
   // и присваевается к кнопке в посте
   function deletePost(post) {
     setPosts(posts.filter(item => item.id !== post.id))
+  }
+
+  function openPost(id) {
+    navigate(`${id}`)
   }
 
   // useEffect, выполнится единожды, только при первом рендере
@@ -85,7 +92,7 @@ export default function Posts() {
 
       {/* сами посты */}
       {postError && <h1>{postError}</h1>}
-      {postLoading ? <Loader /> : <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} />}
+      {postLoading ? <Loader /> : <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} openPost={openPost}/>}
 
       <Pagination 
         initial_arr={pages_array} 

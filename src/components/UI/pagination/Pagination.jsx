@@ -7,7 +7,7 @@ export default function Pagination({ initial_arr, currentPage, setCurrentPage })
             {/* маппимся по массиву и превращаем его в кнопочки для страниц */}
             {initial_arr.map((page, i) => {
                 return (
-                    <p key={i} id={i + 1} className={i + 1 === currentPage ? styles.page_active : styles.page} onClick={(event) => {
+                    <p key={i} id={i + 1} className={i + 1 === currentPage ? `${styles.page_active} ${styles.page}` : styles.page} onClick={(event) => {
                         setCurrentPage(parseInt(event.currentTarget.id, 10))
                     }}>
 
