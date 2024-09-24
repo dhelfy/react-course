@@ -1,0 +1,18 @@
+.comment {
+    background-color: #090909;
+    color: #fff;
+    max-width: 445px;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 10pt;
+    font-weight: 400;
+}
+
+.comment_title {
+    font-size: 16pt;
+    font-weight: 600;
+}
