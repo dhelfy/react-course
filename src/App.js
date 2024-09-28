@@ -1,25 +1,37 @@
 import "./styles/styles.css"
-import Posts from "./pages/Posts"
-import About from "./pages/About";
-import NoPage from "./pages/NoPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import HomePage from "./pages/HomePage";
-import PostPage from "./pages/PostPage/PostPage";
+import { private_routes_arr, public_routes_arr } from "./router/routes";
+import { useState } from "react";
 
 function App() {
+  let [isLogged, setIsLogged] = useState(false)
+
+  let private_routes = private_routes_arr.map(function (route) {
+    if (route.path === "index") {
+      return <Route index element={<route.element />} />
+    }
+    return <Route path={route.path} element={<route.element />} />
+  })
+
+  let public_routes = public_routes_arr.map(function (route) {
+    return <Route path={route.path} element={<route.element isLogged={isLogged} setIsLogged={setIsLogged}/>} />
+  })
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />}/>
-            <Route path="blog" element={<Posts />} />
-            <Route path="blog/:id" element={<PostPage />}/>
-            <Route path="about" element={<About />} />
-            <Route path="*" element={<NoPage />} />
-          </Route>
-        </Routes>
+        {isLogged ?
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              {private_routes}
+            </Route>
+          </Routes>
+          :
+          <Routes>
+              {public_routes}
+          </Routes>
+        }
       </BrowserRouter>
     </div>
   );

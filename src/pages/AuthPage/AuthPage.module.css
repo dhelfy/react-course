@@ -1,0 +1,32 @@
+.auth_page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth_window {
+    background-color: #090909;
+    color: #fff;
+    height: 276px;
+    max-width: 400px;
+    width: 100vw;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth_title {
+    font-weight: 400;
+}
+
+.auth_form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 360px;
+}
