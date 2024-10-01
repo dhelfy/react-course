@@ -2,7 +2,7 @@ import "./styles/styles.css"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import { private_routes_arr, public_routes_arr } from "./router/routes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthContext } from "./context/context";
 
 function App() {
@@ -18,6 +18,12 @@ function App() {
   let public_routes = public_routes_arr.map(function (route) {
     return <Route path={route.path} element={<route.element />} />
   })
+
+  useEffect(() => {
+    if(localStorage.getItem('auth')) {
+      setIsLogged(true)
+    }
+  }, [])
 
   return (
     <AuthContext.Provider value={{ isLogged, setIsLogged }}>

@@ -11,6 +11,7 @@ export default function AuthPage() {
 
     function onLogin () {
         setIsLogged(true)
+        localStorage.setItem('auth', 'true')
         navigate("/")
     }
 
