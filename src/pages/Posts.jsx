@@ -1,6 +1,6 @@
 import PostsList from "../components/PostsList";
 import PostForm from "../components/PostForm/PostForm";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePosts } from "../hooks/usePosts";
 import { useFetching } from "../hooks/useFetching";
 import PostFilter from "../components/PostFilter";
@@ -36,14 +36,17 @@ export default function Posts() {
 
   let navigate = useNavigate()
 
+  let lastElement = useRef()
+  let observer = useRef()
+
   /* 
     фетчим посты, узнаем сколько их всего,
     кладем их в массив с постами и устанавливаем кол-во страниц в pages
   */ 
   let [postLoading, postError, fetchPosts] = useFetching(async () => {
-    let posts = await PostService.getAll(limit, currentPage)
-    let totalCount = posts.headers['x-total-count']
-    setPosts(posts.data)
+    let loaded_posts = await PostService.getAll(limit, currentPage)
+    let totalCount = loaded_posts.headers['x-total-count']
+    setPosts([...posts, ...loaded_posts.data])
     setPages(totalPages(totalCount, limit))
   })
 
@@ -70,6 +73,27 @@ export default function Posts() {
     fetchPosts()
   }, [currentPage])
 
+  useEffect(() => {
+    // проверяем загружаются ли посты и убираем прошлый обсервер
+    if (postLoading) return;
+    if (observer.current) observer.current.disconnect();
+    // создаем обсервер только в случае если посты уже загрузились
+    if (!postLoading && posts.length > 0) {
+      function callback(entries, observer) {
+        if (entries[0].isIntersecting && currentPage < pages) {
+          setCurrentPage(currentPage + 1)
+        }
+      }
+
+      // создаем новый обсервер
+      observer.current = new IntersectionObserver(callback)
+      
+      // крепим его к диву под постами
+      observer.current.observe(lastElement.current)
+
+    }
+  }, [postLoading, posts.length])
+
   // сортированные посты и посты подходящие под поиск
   let searchedAndSortedPosts = usePosts(filter.sort, posts, filter.query)
 
@@ -92,7 +116,9 @@ export default function Posts() {
 
       {/* сами посты */}
       {postError && <h1>{postError}</h1>}
-      {postLoading ? <Loader /> : <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} openPost={openPost}/>}
+      <PostsList posts={searchedAndSortedPosts} deletePost={deletePost} openPost={openPost}/>
+      <div style={{height: '20px'}} ref={lastElement}></div>
+      {postLoading && <Loader />}
 
       <Pagination 
         initial_arr={pages_array} 

@@ -8,15 +8,15 @@ import { AuthContext } from "./context/context";
 function App() {
   let [isLogged, setIsLogged] = useState(false)
 
-  let private_routes = private_routes_arr.map(function (route) {
+  let private_routes = private_routes_arr.map(function (route, i) {
     if (route.path === "index") {
-      return <Route index element={<route.element />} />
+      return <Route index element={<route.element />} key={i}/>
     }
-    return <Route path={route.path} element={<route.element />} />
+    return <Route path={route.path} element={<route.element />} key={i}/>
   })
 
-  let public_routes = public_routes_arr.map(function (route) {
-    return <Route path={route.path} element={<route.element />} />
+  let public_routes = public_routes_arr.map(function (route, i) {
+    return <Route path={route.path} element={<route.element />} key={i}/>
   })
 
   useEffect(() => {
