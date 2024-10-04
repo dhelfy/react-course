@@ -11,6 +11,7 @@ import Loader from "../components/UI/loader/Loader";
 import { totalPages, fillPagesArray } from "../utils/pages";
 import Pagination from "../components/UI/pagination/Pagination";
 import { useNavigate } from "react-router-dom";
+import { useObserver } from "../hooks/useObserver";
 
 export default function Posts() {
   // массив постов и его состояние
@@ -37,7 +38,6 @@ export default function Posts() {
   let navigate = useNavigate()
 
   let lastElement = useRef()
-  let observer = useRef()
 
   /* 
     фетчим посты, узнаем сколько их всего,
@@ -73,26 +73,9 @@ export default function Posts() {
     fetchPosts()
   }, [currentPage])
 
-  useEffect(() => {
-    // проверяем загружаются ли посты и убираем прошлый обсервер
-    if (postLoading) return;
-    if (observer.current) observer.current.disconnect();
-    // создаем обсервер только в случае если посты уже загрузились
-    if (!postLoading && posts.length > 0) {
-      function callback(entries, observer) {
-        if (entries[0].isIntersecting && currentPage < pages) {
-          setCurrentPage(currentPage + 1)
-        }
-      }
-
-      // создаем новый обсервер
-      observer.current = new IntersectionObserver(callback)
-      
-      // крепим его к диву под постами
-      observer.current.observe(lastElement.current)
-
-    }
-  }, [postLoading, posts.length])
+  useObserver(postLoading, currentPage < pages, lastElement, function() {
+    setCurrentPage(currentPage + 1)
+  })
 
   // сортированные посты и посты подходящие под поиск
   let searchedAndSortedPosts = usePosts(filter.sort, posts, filter.query)
