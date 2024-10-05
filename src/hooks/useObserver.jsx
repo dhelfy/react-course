@@ -5,10 +5,9 @@ export function useObserver(isLoading, canLoad, ref, callback) {
 
     useEffect(() => {
         
-        // проверяем загружаются ли посты и убираем прошлый обсервер
+        // проверяем загружаются ли еще данные и убираем старый обсервер
         if (isLoading) return;
         if (observer.current) observer.current.disconnect();
-        // создаем обсервер только в случае если посты уже загрузились
 
         function observer_callback(entries, observer) {
             if (entries[0].isIntersecting && canLoad) {
@@ -19,7 +18,7 @@ export function useObserver(isLoading, canLoad, ref, callback) {
         // создаем новый обсервер
         observer.current = new IntersectionObserver(observer_callback)
 
-        // крепим его к диву под постами
+        // крепим его к элементу
         observer.current.observe(ref.current)
 
 
